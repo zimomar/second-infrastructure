@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+    db:
+        image: mariadb
+        volumes:
+            - ./mariadb_data:/var/lib/mysql
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: test
+            MYSQL_DATABASE: testDB
+            TZ: 'Europe/Berlin'
+        networks:
+            - webservice_network
+
+    webservice:
+        depends_on:
+            - db
+        build: .
+        networks:
+            - webservice_network
+
+networks:
+    webservice_network:
+        driver: bridge
