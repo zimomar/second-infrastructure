@@ -10,18 +10,22 @@ services:
         environment:
             MYSQL_ROOT_PASSWORD: test
             MYSQL_DATABASE: testDB
-            TZ: 'Europe/Berlin'
+            TZ: 'Europe/Paris'
         networks:
-            - webservice_network
+            - dolibarr_network
+        ports:
+          - "3306:3306"
 
-    webservice:
-        container_name: webservice
+    dolibarr:
+        container_name: dolibarr
         depends_on:
             - db
-        image: zimomar/project-2:1.0
+        image: zimomar/project-2:1.1
         networks:
-            - webservice_network
+            - dolibarr_network
+        ports:
+          - "80:80"
 
 networks:
-    webservice_network:
+    dolibarr_network:
         driver: bridge
