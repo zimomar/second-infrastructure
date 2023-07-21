@@ -18,7 +18,7 @@ services:
         container_name: webservice
         depends_on:
             - db
-        build: .
+        image: allanleguern/project-2:1.0
         networks:
             - webservice_network
 
