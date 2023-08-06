@@ -10,7 +10,7 @@ RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" \
 RUN wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add -
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    php8.0 libapache2-mod-php8.0
+    php7.4 libapache2-mod-php7.4 php7.4-cli php7.4-json php7.4-common php7.4-mysql php7.4-zip php7.4-gd php7.4-mbstring php7.4-curl php7.4-xml php7.4-bcmath
 
 COPY ./html/ /var/www/html/
 
