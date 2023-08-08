@@ -30,7 +30,7 @@ services:
 
     load_balancer:
         container_name: lb
-        build: load_balancer/ 
+        image: nginx 
         depends_on:
           - dolibarr
         ports:
