@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.28.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: dolibarr
+  name: dolibarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: dolibarr
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml
+        kompose.version: 1.28.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/second-infrastructure-dolibarr-network: "true"
+        io.kompose.service: dolibarr
+    spec:
+      containers:
+        - image: zimomar/dolibarr
+          name: dolibarr
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/www/html/htdocs/conf/conf.php
+              name: dolibarr-claim0
+            - mountPath: /var/www/html/documents
+              name: dolibarr-claim1
+      restartPolicy: Always
+      volumes:
+        - name: dolibarr-claim0
+          persistentVolumeClaim:
+            claimName: dolibarr-claim0
+        - name: dolibarr-claim1
+          persistentVolumeClaim:
+            claimName: dolibarr-claim1
+status: {}

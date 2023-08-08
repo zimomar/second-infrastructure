@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.28.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: mariadb
+  name: mariadb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: mariadb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml
+        kompose.version: 1.28.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/second-infrastructure-dolibarr-network: "true"
+        io.kompose.service: mariadb
+    spec:
+      containers:
+        - env:
+            - name: MARIADB_PASSWORD
+              value: dolibarr
+            - name: MARIADB_ROOT_PASSWORD
+              value: root
+            - name: MARIADB_USER
+              value: dolibarr
+            - name: TZ
+              value: Europe/Paris
+          image: mariadb
+          name: mariadb
+          ports:
+            - containerPort: 3306
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: mariadb-claim0
+      restartPolicy: Always
+      volumes:
+        - name: mariadb-claim0
+          persistentVolumeClaim:
+            claimName: mariadb-claim0
+status: {}
