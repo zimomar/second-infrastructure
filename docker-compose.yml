@@ -24,8 +24,6 @@ services:
         image: zimomar/dolibarr
         networks:
           - dolibarr_network 
-        ports:
-          - "8888:80"
         volumes:
           - ./dolibarr/conf.php:/var/www/html/htdocs/conf/conf.php
           - ./dolibarr/documents:/var/www/html/documents
@@ -36,9 +34,12 @@ services:
         depends_on:
           - dolibarr
         ports:
-          - "8080:8080"
+          - "80:80"
         networks:
           - dolibarr_network
+        volumes:
+          - ./load_balancer/nginx.conf:/etc/nginx/nginx.conf
+
 networks:
     dolibarr_network:
         driver: bridge
