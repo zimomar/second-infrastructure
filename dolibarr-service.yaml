@@ -4,7 +4,7 @@ metadata:
   name: dolibarr
 spec:
   selector:
-    app: dolibarr   # Le label du pod auquel ce service doit rediriger le trafic
+    io.kompose.service: dolibarr
   ports:
     - protocol: TCP
       port: 80        # Port exposé par le service
