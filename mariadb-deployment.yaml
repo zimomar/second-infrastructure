@@ -17,22 +17,17 @@ spec:
     type: Recreate
   template:
     metadata:
-      annotations:
-        kompose.cmd: kompose convert -f docker-compose.yml
-        kompose.version: 1.28.0 (HEAD)
-      creationTimestamp: null
       labels:
         io.kompose.network/second-infrastructure-dolibarr-network: "true"
         io.kompose.service: mariadb
     spec:
       containers:
         - env:
-            - name: MARIADB_PASSWORD
-              value: dolibarr
             - name: MARIADB_ROOT_PASSWORD
-              value: root
-            - name: MARIADB_USER
-              value: dolibarr
+              valueFrom:
+                secretKeyRef:
+                  key: MARIADB_ROOT_PASSWORD
+                  name: credential
             - name: TZ
               value: Europe/Paris
           image: mariadb
@@ -42,10 +37,10 @@ spec:
           resources: {}
           volumeMounts:
             - mountPath: /var/lib/mysql
-              name: mariadb-claim0
+              name: mariadb-pv
       restartPolicy: Always
       volumes:
-        - name: mariadb-claim0
+        - name: mariadb-pv
           persistentVolumeClaim:
-            claimName: mariadb-claim0
+            claimName: mariadb-pv-claim
 status: {}

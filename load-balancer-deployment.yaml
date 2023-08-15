@@ -32,11 +32,12 @@ spec:
             - containerPort: 80
           resources: {}
           volumeMounts:
-            - mountPath: /etc/nginx/nginx.conf
-              name: load-balancer-claim0
+            - name: nginx-config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
       restartPolicy: Always
       volumes:
-        - name: load-balancer-claim0
-          persistentVolumeClaim:
-            claimName: load-balancer-claim0
+        - name: nginx-config
+          configMap:
+            name: "nginx-config"
 status: {}

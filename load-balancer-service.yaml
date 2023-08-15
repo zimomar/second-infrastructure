@@ -9,10 +9,11 @@ metadata:
     io.kompose.service: load-balancer
   name: load-balancer
 spec:
+  type: NodePort
   ports:
-    - name: "80"
-      port: 80
+    - port: 8080
       targetPort: 80
+      nodePort: 31616
   selector:
     io.kompose.service: load-balancer
 status:
