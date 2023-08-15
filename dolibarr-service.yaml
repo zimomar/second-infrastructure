@@ -7,7 +7,7 @@ spec:
     io.kompose.service: dolibarr
   ports:
     - protocol: TCP
-      port: 80        # Port exposé par le service
-      targetPort: 80  # Port du pod auquel le trafic doit être redirigé
-  type: ClusterIP    # Type de service, peut être NodePort, LoadBalancer, ou ClusterIP
+      port: 80        
+      targetPort: 80 
+  type: NodePort
 
