@@ -1,1 +1,4 @@
 docker/mariadb_data/*
+infra/secrets.tf
+infra/.terraform*
+.idea
