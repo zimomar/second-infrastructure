@@ -1,46 +1,33 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert -f docker-compose.yml
-    kompose.version: 1.28.0 (HEAD)
-  creationTimestamp: null
-  labels:
-    io.kompose.service: mariadb
   name: mariadb
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: mariadb
-  strategy:
-    type: Recreate
+      app: mariadb
   template:
     metadata:
       labels:
-        io.kompose.network/second-infrastructure-dolibarr-network: "true"
-        io.kompose.service: mariadb
+        app: mariadb
     spec:
       containers:
-        - env:
-            - name: MARIADB_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: MARIADB_ROOT_PASSWORD
-                  name: credential
-            - name: TZ
-              value: Europe/Paris
+        - name: mariadb
           image: mariadb
-          name: mariadb
           ports:
             - containerPort: 3306
-          resources: {}
+          env:
+            #- name: MARIADB_RANDOM_ROOT_PASSWORD
+#            - name: MARIADB_ALLOW_EMPTY_ROOT_PASSWORD
+#              value: "0" # if it is 1 and root_password is set, root_password takes precedance
+            - name: MARIADB_ROOT_PASSWORD
+              value: secret
           volumeMounts:
-            - mountPath: /var/lib/mysql
-              name: mariadb-pv
-      restartPolicy: Always
+            - name: mariadb-pv
+              mountPath: /var/lib/mysql
       volumes:
         - name: mariadb-pv
           persistentVolumeClaim:
             claimName: mariadb-pv-claim
-status: {}
