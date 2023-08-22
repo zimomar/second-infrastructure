@@ -1,7 +1,0 @@
-apiVersion: v1
-data:
-  conf.php: ""
-kind: ConfigMap
-metadata:
-  creationTimestamp: null
-  name: conf-dolibarr

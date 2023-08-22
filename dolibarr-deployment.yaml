@@ -1,51 +1,62 @@
-apiVersion: apps/v1
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dolibarr-pv-claim
+  labels:
+    app: dolibarr
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dolibarr
+  labels:
+    app: dolibarr
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: dolibarr
+    tier: frontend
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert -f docker-compose.yml
-    kompose.version: 1.28.0 (HEAD)
-  creationTimestamp: null
-  labels:
-    io.kompose.service: dolibarr
   name: dolibarr
+  labels:
+    app: dolibarr
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: dolibarr
+      app: dolibarr
+      tier: frontend
   strategy:
     type: Recreate
   template:
     metadata:
-      annotations:
-        kompose.cmd: kompose convert -f docker-compose.yml
-        kompose.version: 1.28.0 (HEAD)
-      creationTimestamp: null
       labels:
-        io.kompose.network/second-infrastructure-dolibarr-network: "true"
-        io.kompose.service: dolibarr
+        app: dolibarr
+        tier: frontend
     spec:
       containers:
-        - ports:
-            - name: http
-              containerPort: 80
-              protocol: TCP
-          image: zimomar/dolibarr
+        - image: zimomar/dolibarr:latest
           name: dolibarr
-          resources: {}
+          ports:
+            - containerPort: 80
+              name: dolibarr
           volumeMounts:
-            - mountPath: /var/www/html/htdocs/conf/conf.php
-              subPath: conf.php
-              name: conf-dolibarr
-            #- mountPath: /var/www/html/documents
-            #  name: dolibarr-claim1
-      restartPolicy: Always
+            - name: dolibarr-persistent-storage
+              mountPath: /var/www/html
       volumes:
-        - name: conf-dolibarr
-          configMap:
-            name: "conf-dolibarr"
-        #- name: dolibarr-claim1
-        #    claimName: dolibarr-claim0
-        #  persistentVolumeClaim:
-        #    claimName: dolibarr-claim1
-status: {}
+        - name: dolibarr-persistent-storage
+          persistentVolumeClaim:
+            claimName: dolibarr-pv-claim
