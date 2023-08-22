@@ -10,3 +10,13 @@ minikube start --driver=docker
 ```
 kubectl apply -f .
 ```
+
+### provision dolibarr volume
+```
+kubectl cp dolibarr-html/* {dolibarr-pod-id}:/var/www/html/
+```
+
+### Expose dolibarr servide
+```
+minikube service dolibarr --url
+```
