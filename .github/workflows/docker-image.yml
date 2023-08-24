@@ -16,5 +16,6 @@ jobs:
     - name: Build the Docker image
       run: |
           docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_PASSWORD}}
-          cd docker/dolibarr && docker build -t ${{vars.DOCKERHUB_REPO}} .
+          ls -la
+          cd docker/dolibarr && docker build -t ${{secrets.DOCKER_USER}}/${{vars.DOCKERHUB_REPO}} .
           docker push ${{vars.DOCKERHUB_REPO}}
