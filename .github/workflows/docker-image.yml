@@ -6,9 +6,6 @@ on:
   pull_request:
     branches: [ "main" ]
 
-env:
-  DOCKERHUB_REPO: ${{ env.DOCKERHUB_REPO }}
-
 jobs:
 
   build:
@@ -18,4 +15,4 @@ jobs:
     steps:
     - name: Build the Docker image
       run: |
-          echo $DOCKERHUB_REPO
+          docker pull ${{ env.DOCKERHUB_REPO }}
