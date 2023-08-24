@@ -19,4 +19,3 @@ jobs:
           docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_PASSWORD}}
           cd docker/dolibarr && docker build -t ${{secrets.DOCKER_USER}}/${{vars.DOCKERHUB_REPO}}:latest .
           docker push ${{secrets.DOCKER_USER}}/${{vars.DOCKERHUB_REPO}}:latest
-          kubectl version
