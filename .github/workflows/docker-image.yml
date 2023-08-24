@@ -20,15 +20,15 @@ jobs:
         tar xf ~/doctl-1.98.1-linux-amd64.tar.gz
         sudo mv ~/doctl /usr/local/bin
     - uses: actions/checkout@v3
+    - name: Build and push the Docker image
+      run: |
+        docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_PASSWORD}}
+        cd docker/dolibarr && docker build -t ${{secrets.DOCKER_USER}}/${{vars.DOCKERHUB_REPO}}:latest .
+        docker push ${{secrets.DOCKER_USER}}/${{vars.DOCKERHUB_REPO}}:latest
     - name: Configure doctl and import digitalocean cluster
       run: |
         sudo doctl auth init --access-token "${{ secrets.DIGITAL_OCEAN_TOKEN }}"
         sudo doctl kubernetes cluster kubeconfig save "${{ secrets.DIGITAL_OCEAN_CLUSTER }}"
-    - name: Get pods
+    - name: Delete dolibarr pod
       run: |
-        sudo kubectl get pods -o wide
-#    - name: Build the Docker image
-#      run: |
-#          docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_PASSWORD}}
-#          cd docker/dolibarr && docker build -t ${{secrets.DOCKER_USER}}/${{vars.DOCKERHUB_REPO}}:latest .
-#          docker push ${{secrets.DOCKER_USER}}/${{vars.DOCKERHUB_REPO}}:latest
+        sudo kubectl delete pods -l app=dolibarr
