@@ -16,4 +16,4 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: |
-          echo "$DOCKERHUB_REPO"
+          echo "${{ env.DOCKERHUB_REPO }}"
