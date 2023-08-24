@@ -13,7 +13,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
     - name: Build the Docker image
+      env:
+        DOCKERHUB_REPO: ${{ env.DOCKERHUB_REPO }}
       run: |
-          echo "${{ env.DOCKERHUB_REPO }}"
+          echo $DOCKERHUB_REPO
