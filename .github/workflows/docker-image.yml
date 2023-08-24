@@ -14,6 +14,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
+    - name: Install doctl
       run: |
-          doctl version
+        snap install doctl
+#    - name: Build the Docker image
+#      run: |
+#          docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_PASSWORD}}
+#          cd docker/dolibarr && docker build -t ${{secrets.DOCKER_USER}}/${{vars.DOCKERHUB_REPO}}:latest .
+#          docker push ${{secrets.DOCKER_USER}}/${{vars.DOCKERHUB_REPO}}:latest
