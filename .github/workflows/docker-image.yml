@@ -17,11 +17,9 @@ jobs:
     - name: Install doctl
       run: |
         sudo snap install doctl
-    - name: Configure doctl
+    - name: Configure doctl and import digitalocean cluster
       run: |
         doctl auth init --access-token "${{ secrets.DIGITAL_OCEAN_TOKEN }}"
-    - name: Import digital ocean cluster
-      run: |
         sudo doctl kubernetes cluster kubeconfig save "${{ secrets.DIGITAL_OCEAN_CLUSTER }}"
     - name: Get pods
       run: |
