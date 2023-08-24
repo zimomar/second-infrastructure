@@ -13,13 +13,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
     - name: Install doctl
       run: |
-        sudo snap install doctl
-        sudo snap connect doctl:kube-config
-        sudo snap connect doctl:ssh-keys :ssh-keys
-        sudo snap connect doctl:dot-docker
+        cd ~
+        wget https://github.com/digitalocean/doctl/releases/download/v1.98.1/doctl-1.98.1-linux-amd64.tar.gz
+        tar xf ~/doctl-1.98.1-linux-amd64.tar.gz
+        sudo mv ~/doctl /usr/local/bin
+    - uses: actions/checkout@v3
     - name: Configure doctl and import digitalocean cluster
       run: |
         sudo doctl auth init --access-token "${{ secrets.DIGITAL_OCEAN_TOKEN }}"
