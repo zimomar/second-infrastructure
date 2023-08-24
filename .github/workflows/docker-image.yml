@@ -15,4 +15,4 @@ jobs:
     steps:
     - name: Build the Docker image
       run: |
-          docker pull ${{ env.DOCKERHUB_REPO }}
+          echo ${{ vars.DOCKERHUB_REPO }}
