@@ -23,7 +23,9 @@ spec:
 #            - name: MARIADB_ALLOW_EMPTY_ROOT_PASSWORD
 #              value: "0" # if it is 1 and root_password is set, root_password takes precedance
             - name: MARIADB_ROOT_PASSWORD
-              value: secret
+              secretKeyRef:
+                key: MARIADB_ROOT_PASSWORD
+                name: mariadb-credential
           volumeMounts:
             - name: mariadb-pv
               mountPath: /var/lib/mysql

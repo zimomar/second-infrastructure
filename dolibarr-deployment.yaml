@@ -24,8 +24,7 @@ spec:
     - port: 80
   selector:
     app: dolibarr
-    tier: frontend
-  type: LoadBalancer
+  type: ClusterIP
 
 ---
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
@@ -48,7 +47,7 @@ spec:
         tier: frontend
     spec:
       containers:
-        - image: zimomar/dolibarr:latest
+        - image: hamzaah/dolibarr:latest
           name: dolibarr
           ports:
             - containerPort: 80

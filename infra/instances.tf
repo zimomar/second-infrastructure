@@ -54,6 +54,19 @@ resource "digitalocean_droplet" "s4" {
   vpc_uuid              = digitalocean_vpc.vpc01.id
 }
 
+resource "digitalocean_kubernetes_cluster" "kubernetes_cluster" {
+  name                  = "dolibarr-cluster"
+  region                = "fra1"
+  version               = "1.27.4-do.0"
+  #vpc_uuid              = digitalocean_vpc.vpc01.id
+
+  node_pool {
+    name                = "dolibarr-pool"
+    size                = "s-1vcpu-2gb"
+    node_count          = 3
+  }
+}
+
 #resource "digitalocean_firewall" "basic_fw" {
 #  name                  = "basic-fw"
 #  droplet_ids           = [digitalocean_droplet.s0.id, digitalocean_droplet.s1.id, digitalocean_droplet.s2.id,

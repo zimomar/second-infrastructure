@@ -1,36 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert -f docker-compose.yml
-    kompose.version: 1.28.0 (HEAD)
-  creationTimestamp: null
-  labels:
-    io.kompose.service: load-balancer
   name: load-balancer
+  labels:
+    app: load-balancer
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: load-balancer
+      app: load-balancer
   strategy:
     type: Recreate
   template:
     metadata:
-      annotations:
-        kompose.cmd: kompose convert -f docker-compose.yml
-        kompose.version: 1.28.0 (HEAD)
-      creationTimestamp: null
       labels:
-        io.kompose.network/second-infrastructure-dolibarr-network: "true"
-        io.kompose.service: load-balancer
+        app: load-balancer
     spec:
       containers:
         - image: nginx
           name: lb
           ports:
             - containerPort: 80
-          resources: {}
           volumeMounts:
             - name: nginx-config
               mountPath: /etc/nginx/nginx.conf
@@ -40,4 +30,3 @@ spec:
         - name: nginx-config
           configMap:
             name: "nginx-config"
-status: {}
