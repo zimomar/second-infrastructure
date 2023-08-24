@@ -1,0 +1,61 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dolibarr-pv-claim
+  labels:
+    app: dolibarr
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dolibarr
+  labels:
+    app: dolibarr
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: dolibarr
+  type: ClusterIP
+
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: dolibarr
+  labels:
+    app: dolibarr
+spec:
+  selector:
+    matchLabels:
+      app: dolibarr
+      tier: frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: dolibarr
+        tier: frontend
+    spec:
+      containers:
+        - image: hamzaah/dolibarr:latest
+          name: dolibarr
+          ports:
+            - containerPort: 80
+              name: dolibarr
+          volumeMounts:
+            - name: dolibarr-persistent-storage
+              mountPath: /var/www/html
+      volumes:
+        - name: dolibarr-persistent-storage
+          persistentVolumeClaim:
+            claimName: dolibarr-pv-claim

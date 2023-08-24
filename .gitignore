@@ -1,1 +1,6 @@
-mariadb_data/*
+docker/mariadb_data
+infra/secrets.tf
+infra/.terraform*
+.idea
+terraform.tfstate
+terraform.tfstate.backup
