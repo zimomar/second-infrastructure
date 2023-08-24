@@ -15,4 +15,6 @@ jobs:
     steps:
     - name: Build the Docker image
       run: |
-          echo ${{ vars.DOCKERHUB_REPO }}
+          docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+          cd docker/dolibarr && docker build -t ${{vars.DOCKERHUB_REPO}} .
+          docker push ${{vars.DOCKERHUB_REPO}}
