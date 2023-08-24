@@ -25,7 +25,7 @@ jobs:
         doctl kubernetes cluster kubeconfig save "${{ secrets.DIGITAL_OCEAN_CLUSTER }}"
     - name: Get pods
       run: |
-        kubectl get pods -o wide
+        sudo kubectl get pods -o wide
 #    - name: Build the Docker image
 #      run: |
 #          docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_PASSWORD}}
